@@ -1,30 +1,56 @@
-import React from 'react'
-
-import { makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-
-const useStyles = makeStyles((theme) => ({
-    appBar: {
-        background: "#fff"
-    }
-}))
-
+import { Button } from '../several/Button'
+import React , { useState, useEffect } from 'react'
+import { Link }from 'react-router-dom'
+import './Navbar.css'
 const Navbar = () => {
-    const classes = useStyles()
+   
+  const [click, setClick] = useState(false)
+  const [button, setButton] = useState(true)
 
-    return (
-        <div className="App">
-            <AppBar className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" color="primary">
-                        Curiosidades Mundo
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+  const handleClick = () => setClick(!click)
+
+  const closeMobileMenu = () => setClick(false)
+  const showButton = () => {
+    if(window.innerWidth <= 960){
+      setButton(false)
+    } else {
+      setButton(true)
+    }
+  }
+
+  useEffect(() => {
+    showButton()
+  }, [])
+  window.addEventListener('resize', showButton)
+  return (
+   <>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <div to="/" className="navbar-logo">
+          CM
         </div>
-    )
+        <div className="menu-icon" onClick={handleClick}>
+          <i className={click ? 'fas fa-times': 'fas fa-bars'}></i>
+        </div>
+        <ul className={click ? 'nav-menu active': 'nav-menu'}>
+          <li className="nav-item">
+            <div to="/" className='nav-links' onClick={closeMobileMenu}>Home</div>
+          </li>
+          <li className="nav-item">
+            <div to="/" className='nav-links' onClick={closeMobileMenu}>Ciencia</div>
+          </li>
+          <li className="nav-item">
+            <div to="/" className='nav-links' onClick={closeMobileMenu}>Desporto</div>
+          </li>
+          <li className="nav-item">
+            <div to="/" className='nav-links' onClick={closeMobileMenu}>Humanidade</div>
+          </li>
+        </ul>
+        {button && <Button buttonStyle='btn--outline'>Entrar</Button>}
+      </div>
+    </nav>
+   </>
+  )
 }
 
 export default Navbar

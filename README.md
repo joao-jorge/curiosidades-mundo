@@ -1,2 +1,0 @@
-# curiosidades-mundo
-Blog

@@ -4,16 +4,18 @@ const Post = require('../models/posts')
 
 // Listar todos os posts
 router.route('/').get( async (req, res)=> {
+  const {page = 1} = req.query 
   await Post
-      .find()
+      .paginate({}, {page, limit: 2})
       .then(post => res.json(post))
       .catch(error => res.status(400).json(`Erro: ${error}`))
 })
 
 // Criar um post
 router.route('/add').post( async (req, res) => {
-  const { title, content, author} = req.body
-  const create = new Post({ title, content, author })
+  const date = new Date()
+  const { title, content, author, tag} = req.body
+  const create = new Post({ title, content, author, tag, createdAt: new Date()})
   await create
     .save()
     .then( () => res.status(200).json('Post Criado'))
@@ -23,13 +25,14 @@ router.route('/add').post( async (req, res) => {
 //Editar um post
 router.route('/update/:id').put( async (req, res) => {
   const { id } = req.params
-  const { title, content, author } = req.body
+  const { title, content, author, tag } = req.body
   await Post
     .updateOne({_id: id}, {
       $set: {
         title,
         content,
-        author
+        author,
+        tag
       }
     })
     .then( (post) => {

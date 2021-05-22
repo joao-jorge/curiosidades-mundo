@@ -28,9 +28,11 @@ app.use(cors())
 
 // Rotas 
 const postRoutes = require('./src/routes/posts')
+const emailRoutes = require('./src/routes/email')
 
   // Usar as rotas
   app.use('/posts', postRoutes)
+  app.use('/email', emailRoutes)
 
 app.listen(`${port}`, () => {
   console.log(`Aplicação rodando na porta ${port}`)
